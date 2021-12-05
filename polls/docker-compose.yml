@@ -1,0 +1,47 @@
+version: "3"
+
+networks:
+  # внешние сеть, определенные вне данного docker-compose.yml
+  polls_net:
+    external:
+      name: gateway_polls_net
+  transport_net:
+    external:
+      name: gateway_transport_net
+
+services:
+  # описание сервиса polls_server
+  polls_server:
+    # имя контейнера
+    container_name: polls_server
+    # сети, в которых работает контейнер
+    networks:
+      - polls_net
+      - transport_net
+    # расположение dockerfile для сборки контейнера
+    build: .
+    # соответствие портов хоста и контейнера
+    ports:
+      - "8080:8080"
+    # контейнеры, от которых зависит данный
+    depends_on:
+      - pq_db
+  pq_db:
+    # докер образ, на основе котого создается контейнер
+    image: postgres:latest
+    # перезапустить контейнер, если он остановился
+    restart: always
+    # докер образ, на основе котого создается контейнер
+    networks:
+      - polls_net
+    # соответствие директорий хоста и контейнера
+    volumes:
+      - /var/lib/postgresql/data:/var/lib/postgresql/data
+    # переменные окружения контейнера
+    environment:
+      - POSTGRES_PASSWORD=******
+      - POSTGRES_USER=postgres
+      - POSTGRES_DB=postgres
+    # соответствие портов хоста и контейнера
+    ports:
+      - "5436:5432"

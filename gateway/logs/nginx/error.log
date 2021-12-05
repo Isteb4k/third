@@ -1,0 +1,6 @@
+2021/12/05 07:47:10 [emerg] 1#1: host not found in upstream "polls_server" in /etc/nginx/nginx.conf:13
+2021/12/05 08:04:56 [emerg] 1#1: host not found in upstream "polls_server" in /etc/nginx/nginx.conf:13
+2021/12/05 08:08:38 [emerg] 1#1: host not found in upstream "auth_server" in /etc/nginx/nginx.conf:17
+2021/12/05 08:14:40 [emerg] 1#1: host not found in upstream "auth_server" in /etc/nginx/nginx.conf:17
+2021/12/05 08:15:14 [emerg] 1#1: host not found in upstream "auth_server" in /etc/nginx/nginx.conf:17
+2021/12/05 08:22:02 [emerg] 1#1: host not found in upstream "polls_server" in /etc/nginx/nginx.conf:13

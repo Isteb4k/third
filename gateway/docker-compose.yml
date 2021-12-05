@@ -1,0 +1,44 @@
+version: "3"
+
+networks:
+  # определение сети с драйвером bridge для rabbitmq
+  transport_net:
+    driver: bridge
+  # определение сети с драйвером bridge, в которой работают микросервисы
+  polls_net:
+    driver: bridge
+
+services:
+  # описание сервиса единой точки входа
+  gateway:
+    # докер образ, на основе котого создается контейнер
+    image: nginx:latest
+    # сети, в которых работает контейнер
+    networks:
+      - polls_net
+    # соответствие портов хоста и контейнера
+    ports:
+      - "81:81"
+    # соответствие директорий хоста и контейнера
+    volumes:
+      - ./config/nginx:/etc/nginx
+      - ./logs/nginx:/var/log/nginx
+      - ./placeholder/index.html:/var/www/placeholder/index.html
+  # описание сервиса rabbitmq
+  rabbitmq:
+    # докер образ, на основе котого создается контейнер
+    image: rabbitmq:3-management-alpine
+    # имя контейнера
+    container_name: rabbitmq
+    # сети, в которых работает контейнер
+    networks:
+      - transport_net
+    # переменные окружения контейнера
+    environment:
+      - RABBITMQ_DEFAULT_USER=guest
+      - RABBITMQ_DEFAULT_PASS=guest
+    # соответствие портов хоста и контейнера
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
